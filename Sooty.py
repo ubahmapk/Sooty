@@ -31,7 +31,7 @@ from datetime import datetime, date
 
 try:
     import win32com.client
-except:
+except ModuleNotFoundError:
     print('Cant install Win32com package')
 
 versionNo = '1.3.2'
