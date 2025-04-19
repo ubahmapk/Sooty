@@ -352,8 +352,7 @@ def reputation_checker_switch(choice: str) -> bool:
         # Add URL reputation checker logic here
         return True
     if choice == "3":
-        print("IP Reputation Checker")
-        # Add IP reputation checker logic here
+        ip_reputation_check()
         return True
     if choice == "0":
         return False
