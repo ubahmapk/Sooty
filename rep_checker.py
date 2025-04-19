@@ -256,48 +256,10 @@ def print_hibp_report(report: dict) -> None:
     return None
 
 
-def reputation_checker_switch(choice: str) -> bool:
-    print()
-    if choice == "1":
-        analyze_email()
-        return True
-    if choice == "2":
-        print("URL Reputation Checker")
-        # Add URL reputation checker logic here
-        return True
-    if choice == "3":
-        print("IP Reputation Checker")
-        # Add IP reputation checker logic here
-        return True
-    if choice == "0":
-        return False
-
-    rprint("[red] Invalid choice. Please try again.")
-    return True
-
-
-def reputation_checker_menu():
-    while True:
-        print()
-        print(" --------------------------------- ")
-        rprint("[green] R E P U T A T I O N     C H E C K ")
-        print(" --------------------------------- ")
-        print()
-        print(" 1. Email Reputation")
-        print(" 2. URL Reputation")
-        print(" 3. IP Reputation")
-        print()
-        print(" 0. Return to Main Menu")
-        print()
-
-        msg: str = "Select an option (1-3) or 0 to return to main menu: "
-        if not reputation_checker_switch(input(msg)):
-            break
-
-
 def tor_ip_report(ip: str) -> None:
     """Check if the given IP address is a Tor exit node."""
 
+    # Returns a list of IP addresses that are Tor exit nodes
     url: str = "https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=1.1.1.1"
 
     try:
@@ -308,14 +270,11 @@ def tor_ip_report(ip: str) -> None:
         return None
 
     print("\n TOR Exit Node Report: ")
-    tl = request.text.split("\n")
-    c = 0
-    for i in tl:
-        if ip == i:
-            print("  " + i + " is a TOR Exit Node")
-            c = c + 1
-        if c == 0:
-            print("  " + ip + " is NOT a TOR Exit Node")
+    nodes_list: list[str] = request.text.split("\n")
+    if ip in nodes_list:
+        rprint(f"[red]  {ip} is a TOR Exit Node")
+    else:
+        rprint(f"[green]  {ip} is NOT a TOR Exit Node")
 
     return None
 
