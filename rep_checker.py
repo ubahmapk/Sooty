@@ -177,22 +177,16 @@ def submit_email_for_analysis(email: str, emailrep_api_key: str) -> dict:
 
     try:
         response = requests.get(url, headers=headers)
-    except requests.exceptions.RequestException as e:
+        response.raise_for_status()
+    except requests.HTTPError as e:
         raise EmailRepReportError(f"Request failed: {e}") from e
 
-    if response.status_code == 400:
-        raise EmailRepReportError("Invalid email address or bad request.")
-    if response.status_code == 401:
-        raise EmailRepReportError("Unauthorized / Invalid API Key (for Authenticated Requests)")
-    if response.status_code == 429:
-        raise EmailRepReportError("Rate limit exceeded. Too many requests.")
-
     try:
-        report: dict = response.json()
+        report_data: dict = response.json()
     except ValueError:
         raise EmailRepReportError("Invalid JSON response from the API.") from None
 
-    return report
+    return report_data
 
 
 def print_emailrep_report(raw_report_data: dict) -> None:
