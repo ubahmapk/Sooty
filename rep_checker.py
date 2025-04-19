@@ -336,8 +336,10 @@ def ip_reputation_check() -> None:
     ab_api_key: str = get_abuseipdb_api_key()
     abuseipdb_report(ip, ab_api_key)
 
-    print("\n\nChecking against IP blacklists: ")
-    iplists.main(ip)
+    # print("\n\nChecking against IP blacklists: ")
+    # iplists.main(ip)
+
+    return None
 
 
 def reputation_checker_switch(choice: str) -> bool:
