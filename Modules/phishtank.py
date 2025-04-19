@@ -36,19 +36,16 @@ def db_validity(db_file):
     if db_absent(db_file) or db_outdated(db_file) == 1:
         if download_json(db_file) == False:
             return False
-        else:
-            return True
-    else:
-        print("Phishtank database found and up to date.")
         return True
+    print("Phishtank database found and up to date.")
+    return True
 
 
 def db_absent(db_file):
     if os.path.isfile(db_file):
         return 0
-    else:
-        print("Local database absent. Downloading...")
-        return 1
+    print("Local database absent. Downloading...")
+    return 1
 
 
 def db_outdated(db_file):
