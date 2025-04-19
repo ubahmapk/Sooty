@@ -338,3 +338,42 @@ def ip_reputation_check() -> None:
 
     print("\n\nChecking against IP blacklists: ")
     iplists.main(ip)
+
+
+def reputation_checker_switch(choice: str) -> bool:
+    print()
+    if choice == "1":
+        analyze_email()
+        return True
+    if choice == "2":
+        print("URL Reputation Checker")
+        # Add URL reputation checker logic here
+        return True
+    if choice == "3":
+        print("IP Reputation Checker")
+        # Add IP reputation checker logic here
+        return True
+    if choice == "0":
+        return False
+
+    rprint("[red] Invalid choice. Please try again.")
+    return True
+
+
+def reputation_checker_menu():
+    while True:
+        print()
+        print(" --------------------------------- ")
+        rprint("[green] R E P U T A T I O N     C H E C K ")
+        print(" --------------------------------- ")
+        print()
+        print(" 1. Email Reputation")
+        print(" 2. URL Reputation")
+        print(" 3. IP Reputation")
+        print()
+        print(" 0. Return to Main Menu")
+        print()
+
+        msg: str = "Select an option (1-3) or 0 to return to main menu: "
+        if not reputation_checker_switch(input(msg)):
+            break
