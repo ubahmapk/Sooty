@@ -1,26 +1,16 @@
 import hashlib
-from collections import OrderedDict
 from pathlib import Path
 from typing import Literal
 
-import requests
 from rich import print as rprint
 
-from config import get_config_vars
+from virus_total import read_vt_api_key_from_config, vt_hash_rating, vt_search_file_hash
 
 
 class FileSelectionError(Exception):
     """User cancelled file selection."""
 
     pass
-
-
-def read_vt_api_key_from_config() -> str:
-    configvars: OrderedDict = get_config_vars()
-
-    vt_api_key: str = configvars.get("VT_API_KEY", "")
-
-    return vt_api_key
 
 
 def get_valid_file_path() -> Path:
@@ -82,6 +72,35 @@ def print_hashes(filepath: Path) -> None:
     return None
 
 
+def hash_file_and_search_vt() -> None:
+    try:
+        filename: Path = get_valid_file_path()
+    except FileSelectionError:
+        rprint("\n[red] Error: File selection cancelled")
+        return None
+
+    file_hash: str = get_file_hash(filename, "sha256")
+    print_hashes(filename)
+
+    vt_api_key: str = read_vt_api_key_from_config()
+    vt_search_file_hash(file_hash, vt_api_key)
+
+    return None
+
+
+def search_vt_for_hash() -> None:
+    try:
+        file_hash: str = input(" Enter the hash to search for: ").strip()
+    except KeyboardInterrupt:
+        rprint("\n[red] Error: Hash selection cancelled")
+        return None
+
+    vt_api_key: str = read_vt_api_key_from_config()
+    vt_hash_rating(vt_api_key, file_hash)
+
+    return None
+
+
 def hash_file() -> None:
     try:
         file_path: Path = get_valid_file_path()
@@ -104,71 +123,6 @@ def hash_text() -> None:
     return None
 
 
-def hash_rating() -> None:
-    # VT Hash Checker
-    print()
-    file_hash = str(input(" Enter Hash of file: ").strip())
-    url = "https://www.virustotal.com/vtapi/v2/file/report"
-
-    params = {"apikey": vt_api_key, "resource": file_hash}
-    response = requests.get(url, params=params)
-
-    try:  # EAFP
-        result = response.json()
-    except ValueError:
-        rprint("[red] Error: Invalid API Key")
-        return None
-
-    print()
-    try:
-        if result["response_code"] == 0:
-            rprint("[yellow] Hash was not found in Malware Database")
-        elif result["response_code"] == 1:
-            print(" VirusTotal Report: " + str(result["positives"]) + "/" + str(result["total"]) + " detections found")
-            print(f"   Report Link: https://www.virustotal.com/gui/file/{file_hash}/detection")
-        else:
-            print("[yellow] No Reponse")
-    except TypeError:
-        rprint("[red] Error: Invalid Hash")
-        return None
-
-    return None
-
-
-def hash_file_and_search_vt() -> None:
-    try:
-        filename: Path = get_valid_file_path()
-    except FileSelectionError:
-        rprint("\n[red] Error: File selection cancelled")
-        return None
-
-    file_hash: str = get_file_hash(filename, "sha256")
-    print_hashes(filename)
-    print()
-
-    # VT Hash Checker
-    url = "https://www.virustotal.com/vtapi/v2/file/report"
-
-    params = {"apikey": vt_api_key, "resource": file_hash}
-    response = requests.get(url, params=params)
-
-    try:  # EAFP
-        result = response.json()
-    except ValueError:
-        print("Error: Invalid API Key")
-        return None
-
-    if result["response_code"] == 0:
-        print(" Hash was not found in Malware Database")
-    elif result["response_code"] == 1:
-        print(" VirusTotal Report: " + str(result["positives"]) + "/" + str(result["total"]) + " detections found")
-        print("   Report Link: " + "https://www.virustotal.com/gui/file/" + file_hash + "/detection")
-    else:
-        print("No Response")
-
-    return None
-
-
 def hash_switch(choice) -> bool:
     if choice == "1":
         hash_file()
@@ -177,15 +131,9 @@ def hash_switch(choice) -> bool:
         hash_text()
         return True
     if choice == "3":
-        if not vt_api_key:
-            rprint("\n[red] Error: No VirusTotal API Key found in config.yaml")
-            return True
-        hash_rating()
+        search_vt_for_hash()
         return True
     if choice == "4":
-        if not vt_api_key:
-            rprint("\n[red] Error: No VirusTotal API Key found in config.yaml")
-            return True
         hash_file_and_search_vt()
         return True
     if choice == "0":
@@ -215,5 +163,4 @@ def hash_menu() -> None:
 
 
 if __name__ == "__main__":
-    vt_api_key: str = read_vt_api_key_from_config()
     hash_menu()
