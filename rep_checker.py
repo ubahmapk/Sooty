@@ -156,7 +156,8 @@ def analyze_email() -> None:
         print("[red] No API key present for the EmailRep service.")
         return None
 
-    submit_email_for_analysis(email, emailrep_api_key)
+    report: dict = submit_email_for_analysis(email, emailrep_api_key)
+    print_emailrep_report(report)
 
     return None
 
