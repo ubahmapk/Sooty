@@ -10,8 +10,9 @@ Minimal required Python version 3.3
 
 import ipaddress
 import json
-import requests
 import sys
+
+import requests
 
 
 class userInput:
