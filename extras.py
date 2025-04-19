@@ -1,7 +1,6 @@
 from rich import print
 
-# from Sooty import mainMenu, versionNo
-versionNo = "0.1.0"
+from config import versionNo
 
 
 def contributors() -> None:
@@ -24,7 +23,7 @@ def contributors() -> None:
 
 
 def extrasVersion() -> None:
-    print(" Current Version: " + versionNo)
+    print(f" Current Version: {versionNo}")
 
     return None
 
