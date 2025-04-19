@@ -23,6 +23,7 @@ from extras import extras_menu
 from hash_menu import hash_menu
 from Modules import TitleOpen, criminalip, phishtank
 from url_sanitise import url_sanitise
+from urlscan import urlscanio
 
 try:
     import win32com.client
