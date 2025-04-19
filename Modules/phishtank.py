@@ -20,13 +20,15 @@ Open issues (to be fixed in future releases):
 
 
 """
-import requests
-import sys
-import wget
+
+import json
 import os
+import sys
 import time
 import urllib
-import json
+
+import requests
+import wget
 
 
 def db_validity(db_file):
@@ -66,11 +68,7 @@ def download_json(db_file):
 
     # In case of failure, passing False through so that the program continues with the API
     except Exception as exc:
-        print(
-            "The following error occured when downloading: "
-            + exc
-            + "\nContinuing without a local database."
-        )
+        print("The following error occured when downloading: " + exc + "\nContinuing without a local database.")
         return False
 
 
@@ -102,9 +100,7 @@ def urlcheck_db(local_db, db_file, url, domain):
 
         # Related results matching the domain name. This functions only works with local DB
         if domain in entry["url"]:
-            related_urls.append(
-                {"url": entry["url"], "phish_detail_page": entry["phish_detail_url"]}
-            )
+            related_urls.append({"url": entry["url"], "phish_detail_page": entry["phish_detail_url"]})
             related = True
 
     # Test if variables exist. If db_hit exist, we have a direct hit. If related exists, we
@@ -114,12 +110,7 @@ def urlcheck_db(local_db, db_file, url, domain):
     elif "related" in locals():
         print("No direct entries found.\n\nRelated entries:")
         for url in related_urls:
-            print(
-                "  Details page "
-                + url["phish_detail_page"]
-                + " for the following URL: "
-                + url["url"]
-            )
+            print("  Details page " + url["phish_detail_page"] + " for the following URL: " + url["url"])
     else:
         print("No results found")
 
@@ -137,9 +128,7 @@ def urlcheck_online(local_db, user_agent, api_key, url):
         headers = {
             "User-Agent": user_agent,
         }
-        response = requests.request(
-            method="POST", url=PT_URL, headers=headers, data=querystring
-        )
+        response = requests.request(method="POST", url=PT_URL, headers=headers, data=querystring)
 
         # Checking response from webpage
         if response.status_code == 200:
