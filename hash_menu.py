@@ -1,11 +1,12 @@
 import hashlib
-import sys
+from collections import OrderedDict
 from pathlib import Path
 from typing import Literal
 
 import requests
-import strictyaml
 from rich import print as rprint
+
+from config import get_config_vars
 
 
 class FileSelectionError(Exception):
@@ -15,19 +16,9 @@ class FileSelectionError(Exception):
 
 
 def read_vt_api_key_from_config() -> str:
-    configfile: Path = Path("config.yaml")
+    configvars: OrderedDict = get_config_vars()
 
-    try:
-        with configfile.open() as f:
-            configvars = strictyaml.load(f.read())
-    except FileNotFoundError:
-        print("Config.yaml not found. Check the example config file and rename to 'config.yaml'.")
-        sys.exit(1)
-
-    try:
-        vt_api_key: str = configvars.data["VT_API_KEY"]  # type: ignore
-    except KeyError:
-        vt_api_key: str = ""
+    vt_api_key: str = configvars.get("VT_API_KEY", "")
 
     return vt_api_key
 
