@@ -372,3 +372,7 @@ def reputation_checker_menu():
         msg: str = "Select an option (1-3) or 0 to return to main menu: "
         if not reputation_checker_switch(input(msg)):
             break
+
+
+if __name__ == "__main__":
+    reputation_checker_menu()
