@@ -41,9 +41,7 @@ def dns_lookup() -> None:
     return None
 
 
-def whois() -> None:
-    domain_or_ip: str = str(input(" Enter IP / Domain: ").strip())
-
+def whois(domain_or_ip: str) -> None:
     """
     If the DNS resolution fails, the input is either a non-existent domain
     or an invalid IP
@@ -73,7 +71,8 @@ def dns_switch(choice: str) -> bool:
         dns_lookup()
         return True
     if choice == "3":
-        whois()
+        domain_or_ip: str = str(input(" Enter IP / Domain: ").strip())
+        whois(domain_or_ip)
         return True
     if choice == "0":
         return False
