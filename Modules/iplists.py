@@ -114,7 +114,5 @@ def main(userInputList):
 
 if __name__ == "__main__":
     # Create a unique list of userInput to prevent redundant lookups
-    userInputList = set(
-        input("Please provide one or multiple IP addresses to check: ").split()
-    )
+    userInputList = set(input("Please provide one or multiple IP addresses to check: ").split())
     main(userInputList)
