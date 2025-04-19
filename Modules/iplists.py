@@ -60,8 +60,7 @@ class lookupLists:
         # Lists without an entry in the hitlist are no further processed
         if len(self.hitlist) != 0:
             return self.hitlist
-        else:
-            return self.name
+        return self.name
 
 
 def main(userInputList):
