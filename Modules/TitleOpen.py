@@ -1,9 +1,10 @@
 import random
 
+
 def titleOpen():
-    var = random.randint(1,2)
+    var = random.randint(1, 2)
     if var == 1:
-        print('''                                           
+        print("""                                           
  @@@@@@    @@@@@@    @@@@@@   @@@@@@@  @@@ @@@  
 @@@@@@@   @@@@@@@@  @@@@@@@@  @@@@@@@  @@@ @@@  
 !@@       @@!  @@@  @@!  @@@    @@!    @@! !@@  
@@ -15,9 +16,9 @@ def titleOpen():
 :::: ::   ::::: ::  ::::: ::     ::       ::    
 :: : :     : :  :    : :  :      :        :    
  
-                           by @TheresAFewConors''')
+                           by @TheresAFewConors""")
     if var == 2:
-        print('''
+        print(r"""
 
    _____             _         
   / ____|           | |        
@@ -29,7 +30,6 @@ def titleOpen():
                          |___/ 
                          
                             by @TheresAFewConors
-''')
-    print("\n The SOC Analyst's all-in-one tool to "
-          "automate and speed up workflow ")
-    input('\n Press Enter to continue..')
+""")
+    print("\n The SOC Analyst's all-in-one tool to automate and speed up workflow ")
+    input("\n Press Enter to continue..")
