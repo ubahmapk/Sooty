@@ -7,7 +7,6 @@ from pydantic.dataclasses import dataclass
 from requests.exceptions import HTTPError
 from rich import print as rprint
 
-import Modules.iplists as iplists
 from config import get_config_vars, versionNo
 from dns_menu import whois
 
